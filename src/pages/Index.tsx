@@ -16,17 +16,17 @@ const Index = () => {
         <div className="text-center space-y-8 animate-fade-in">
           <div className="inline-flex items-center px-6 py-3 bg-primary/10 rounded-full text-primary text-sm font-medium mb-6 animate-slide-in hover:bg-primary/15 transition-colors">
             <TrendingUp className="w-4 h-4 mr-2" />
-            Für Professionals, die immer einen Schritt voraus sind
+            Bleib deiner Konkurrenz einen Schritt voraus
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 max-w-4xl mx-auto leading-tight tracking-tight">
-            Smarte Nachrichten.{" "}
-            <span className="text-primary">Wissensvorsprung sichern.</span>
+            Deine News.{" "}
+            <span className="text-primary">Dein Wissensvorsprung.</span>
             <br />
-            <span className="text-3xl md:text-5xl">Direkt auf WhatsApp.</span>
+            <span className="text-3xl md:text-5xl">Direkt in WhatsApp.</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            KI-kuratierte News für Ihren beruflichen Erfolg. Präzise gefiltert, 
-            intelligent zusammengefasst und perfekt in Ihren Workflow integriert.
+            KI-kuratierte News für deinen beruflichen Erfolg. Präzise gefiltert, 
+            intelligent zusammengefasst und perfekt in deinen Alltag integriert.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 pt-6">
             <Button
@@ -34,13 +34,13 @@ const Index = () => {
               className="group text-lg px-8 py-6 shadow-lg hover:shadow-xl transition-all duration-300"
               onClick={() => setShowWizard(true)}
             >
-              14 Tage kostenlos testen
+                Jetzt 14 Tage kostenlos testen
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
           <p className="text-sm text-gray-500">
             <GraduationCap className="inline-block w-4 h-4 mr-1" />
-            50% Rabatt für Studierende
+            50% Rabatt mit deiner .edu E-Mail
           </p>
         </div>
       </section>
@@ -49,25 +49,25 @@ const Index = () => {
       <section className="py-24 bg-white">
         <div className="container px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6">So sieht Ihr Newsletter aus</h2>
+            <h2 className="text-4xl font-bold mb-6">So sieht dein Newsletter aus</h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              Prägnant. Relevant. Actionable.
+              Kurz. Relevant. Handlungsorientiert.
             </p>
           </div>
           <div className="max-w-sm mx-auto bg-[#ECE5DD] rounded-3xl p-6 shadow-xl">
             <div className="bg-white rounded-2xl p-4 shadow-sm space-y-4">
               <div className="flex items-center gap-2 text-primary font-medium">
                 <Clock className="w-4 h-4" />
-                Ihr Morning Briefing, 08:00 Uhr
+                Dein Morning Briefing, 08:00 Uhr
               </div>
               <div className="space-y-4 text-gray-800">
-                <p className="font-bold">🚀 Heute wichtig für Sie:</p>
+                <p className="font-bold">🚀 Heute wichtig für dich:</p>
                 <div className="space-y-2">
-                  <p>*KI & Tech:* OpenAI stellt GPT-5 vor - Was Sie als Professional wissen müssen</p>
-                  <p>*Wirtschaft:* EZB senkt Leitzins - Auswirkungen auf den Markt</p>
+                    <p>*KI & Tech:* OpenAI stellt GPT-5 vor - Die wichtigsten Updates für dich</p>
+                    <p>*Wirtschaft:* EZB senkt Leitzins - Das bedeutet es für dich</p>
                   <p>*Innovation:* Durchbruch in der Quantentechnologie</p>
                 </div>
-                <p className="text-primary">➡️ Tiefergehende Analyse in Ihrem Bereich...</p>
+                <p className="text-primary">➡️ Mehr Details zu deinen Themen...</p>
               </div>
             </div>
           </div>
@@ -78,10 +78,10 @@ const Index = () => {
       <section className="py-24 bg-accent/50">
         <div className="container px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6">Ihr Wettbewerbsvorteil</h2>
+            <h2 className="text-4xl font-bold mb-6">Dein Wettbewerbsvorteil</h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              Newsletter.Chat unterstützt Sie dabei, informierte Entscheidungen zu treffen
-              und Ihren Wissensvorsprung auszubauen.
+              Newsletter.Chat unterstützt dich dabei, bessere Entscheidungen zu treffen
+              und deinen Wissensvorsprung auszubauen.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -92,7 +92,7 @@ const Index = () => {
               <div>
                 <h3 className="text-xl font-semibold mb-2">Wissensvorsprung</h3>
                 <p className="text-gray-600">
-                  Erhalten Sie relevante Insights noch vor Ihren Mitbewerbern.
+                    Erhalte relevante Insights noch vor deinen Mitbewerbern.
                 </p>
               </div>
             </div>
@@ -103,7 +103,7 @@ const Index = () => {
               <div>
                 <h3 className="text-xl font-semibold mb-2">Zeitersparnis</h3>
                 <p className="text-gray-600">
-                  Sparen Sie 83% Zeit bei der Informationsbeschaffung.
+                    Spare 83% Zeit bei deiner Informationsbeschaffung.
                 </p>
               </div>
             </div>
@@ -205,11 +205,11 @@ const Index = () => {
       <section className="py-24 bg-primary relative overflow-hidden">
         <div className="container px-4 text-center relative z-10">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">
-            Bereit für den nächsten Schritt?
+            Bereit für deinen nächsten Schritt?
           </h2>
           <p className="text-white/90 max-w-2xl mx-auto mb-12 text-lg leading-relaxed">
-            Tausende Professionals vertrauen bereits auf Newsletter.Chat für ihre täglichen Updates. 
-            Sichern Sie sich jetzt Ihren Wissensvorsprung.
+            Tausende Nutzer vertrauen bereits auf Newsletter.Chat für ihre täglichen Updates. 
+            Sichere dir jetzt deinen Wissensvorsprung.
           </p>
           <Button
             size="lg"
@@ -222,7 +222,7 @@ const Index = () => {
           </Button>
           <p className="text-sm text-white/80 mt-4">
             <GraduationCap className="inline-block w-4 h-4 mr-1" />
-            50% Rabatt für Studierende verfügbar
+            50% Studentenrabatt mit deiner .edu E-Mail
           </p>
         </div>
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-white/50 to-transparent" />
@@ -233,11 +233,11 @@ const Index = () => {
         <section className="py-20 bg-accent/50">
           <div className="container px-4">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold mb-6">
-                Ihr persönlicher Newsletter
-              </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-                In wenigen Schritten zu Ihrem maßgeschneiderten Nachrichtenerlebnis.
+                <h2 className="text-4xl font-bold mb-6">
+                Dein persönlicher Newsletter
+                </h2>
+                <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+                In wenigen Schritten zu deinem maßgeschneiderten Nachrichtenerlebnis.
               </p>
             </div>
             <NewsletterWizard />

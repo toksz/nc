@@ -19,8 +19,8 @@
 ### Authentication & User Management
 - Supabase authentication integration
 - User profiles with preferences storage
-- Social login options (Google, GitHub)
-- Email verification
+- Social login options (Google)
+- Email verification via Supabase
 
 ### Content Management
 - News article storage and indexing

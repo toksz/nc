@@ -1,133 +1,150 @@
-# NewsletterChat (NC)
+# NewsletterChat - Dein persönlicher WhatsApp-Nachrichtenassistent
 
-A modern web application that delivers personalized news content via WhatsApp, based on user preferences and interests.
+Erhalte maßgeschneiderte News direkt in deinen WhatsApp-Chat. Keine App-Installation nötig, keine komplizierte Einrichtung - einfach loslegen und informiert bleiben!
 
-## Tech Stack
+## 🎯 Deine Vorteile
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-- Supabase (Backend & Authentication)
-- OpenAI GPT-4
-- Twilio WhatsApp API
-- Ragy.ai News API
+- **Personalisierte News-Auswahl**: Du bestimmst die Themen, die dich wirklich interessieren
+- **Direkt in WhatsApp**: Nachrichten kommen genau dort an, wo du sie lesen willst
+- **Zeitersparnis**: KI-gestützte Zusammenfassungen der wichtigsten Artikel
+- **Flexibel & Anpassbar**: Wähle selbst, wann und wie oft du News erhältst
+- **Interaktiv**: Reagiere, speichere oder teile Artikel direkt im Chat
 
-## Getting Started
+## 🚀 Features
 
-1. Clone the repository
+### Für dich optimiert
+- Intelligente Themenauswahl nach deinen Interessen
+- Lesezeit-Schätzung für bessere Planung
+- "Später lesen"-Funktion für wichtige Artikel
+- Personalisierte Empfehlungen basierend auf deinem Leseverhalten
+
+### Smarte Funktionen
+- KI-gestützte Artikelzusammenfassungen
+- Schnelle Reaktionen per Emoji
+- Einfaches Teilen interessanter Artikel
+- Wöchentliche Themen-Zusammenfassungen
+- Breaking News Alerts (optional)
+
+### Deine Kontrolle
+- Flexible Zustellzeiten
+- Themenpräferenzen jederzeit anpassbar
+- Einfache Verwaltung per Chat-Befehle
+- Feedback-System für bessere Empfehlungen
+
+## 🛠 Technologie
+
+- Vite + React + TypeScript für eine moderne Web-App
+- shadcn-ui & Tailwind CSS für ein schönes Design
+- Supabase für Backend & Authentifizierung
+- OpenAI GPT-4 für intelligente Zusammenfassungen
+- Twilio WhatsApp API für zuverlässige Zustellung
+- Ragy.ai News API für aktuelle Nachrichten
+
+## 🎬 Schnellstart
+
+1. Klone das Repository
 ```sh
 git clone https://github.com/toksz/nc
 cd nc
 ```
 
-2. Install dependencies
+2. Installiere die Abhängigkeiten
 ```sh
 npm install
-npm install @supabase/supabase-js twilio @types/twilio
 ```
 
-3. API Setup
-- Create accounts and get API keys for:
+3. Richte die APIs ein
+- Erstelle Accounts für:
 	- [Supabase](https://supabase.com)
 	- [OpenAI](https://platform.openai.com)
-	- [Twilio](https://www.twilio.com) (WhatsApp Business API)
+	- [Twilio](https://www.twilio.com)
 	- [Ragy.ai](https://ragy.ai)
 
-4. Environment Setup
-Create a `.env` file in the project root:
+4. Erstelle die `.env` Datei
 ```env
 # Supabase
-VITE_SUPABASE_URL=your-project-url
-VITE_SUPABASE_ANON_KEY=your-anon-key
+VITE_SUPABASE_URL=deine-project-url
+VITE_SUPABASE_ANON_KEY=dein-anon-key
 
 # News Service
-VITE_RAGY_API_KEY=your-ragy-api-key
+VITE_RAGY_API_KEY=dein-ragy-api-key
 VITE_RAGY_LANG=de
 VITE_RAGY_COUNTRY=DE
 VITE_RAGY_MAX_SNIPPETS=10000
 
 # OpenAI
-VITE_OPENAI_API_KEY=your-openai-api-key
+VITE_OPENAI_API_KEY=dein-openai-api-key
 VITE_OPENAI_MODEL=gpt-4
 
 # Twilio
-VITE_TWILIO_ACCOUNT_SID=your-account-sid
-VITE_TWILIO_AUTH_TOKEN=your-auth-token
+VITE_TWILIO_ACCOUNT_SID=dein-account-sid
+VITE_TWILIO_AUTH_TOKEN=dein-auth-token
 VITE_TWILIO_WHATSAPP_FROM=whatsapp:+14155238886
 ```
 
-5. Initialize Database
-Run these SQL commands in Supabase SQL editor:
+5. Initialisiere die Datenbank
 ```sql
--- Users preferences table
+-- Nutzereinstellungen
 CREATE TABLE user_preferences (
-	id UUID REFERENCES auth.users ON DELETE CASCADE,
-	topics TEXT[],
-	reading_time INTEGER,
-	delivery_preferences JSONB DEFAULT '{"frequency": "daily", "deliveryTime": "09:00", "topics": [], "whatsappNumber": null}'::jsonb,
-	created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()),
-	updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()),
-	PRIMARY KEY (id)
+		id UUID REFERENCES auth.users ON DELETE CASCADE,
+		topics TEXT[],
+		reading_time INTEGER,
+		delivery_preferences JSONB DEFAULT '{"frequency": "daily", "deliveryTime": "09:00", "topics": [], "whatsappNumber": null}'::jsonb,
+		language_preferences TEXT[],
+		content_type_preferences TEXT[],
+		saved_articles UUID[],
+		interaction_history JSONB,
+		created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()),
+		updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()),
+		PRIMARY KEY (id)
 );
 
--- Articles table
+-- Artikel
 CREATE TABLE articles (
-	id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-	title TEXT NOT NULL,
-	content TEXT NOT NULL,
-	topics TEXT[],
-	source TEXT,
-	published_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()),
-	created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW())
+		id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+		title TEXT NOT NULL,
+		content TEXT NOT NULL,
+		summary TEXT,
+		topics TEXT[],
+		source TEXT,
+		estimated_reading_time INTEGER,
+		importance_score FLOAT,
+		category TEXT,
+		published_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()),
+		created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW())
 );
 
--- Reading history table
+-- Lesechronik
 CREATE TABLE reading_history (
-	id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-	user_id UUID REFERENCES auth.users ON DELETE CASCADE,
-	article_id UUID REFERENCES articles ON DELETE CASCADE,
-	read_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW())
+		id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+		user_id UUID REFERENCES auth.users ON DELETE CASCADE,
+		article_id UUID REFERENCES articles ON DELETE CASCADE,
+		reaction TEXT,
+		read_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW())
 );
 ```
 
-5. Start the development server
+6. Starte den Entwicklungsserver
 ```sh
 npm run dev
 ```
 
-## Features
+## 📱 WhatsApp-Integration
 
-See [PROJECT.md](PROJECT.md) for a complete list of current and planned features.
+1. Scanne den QR-Code auf der Website
+2. Bestätige deine Telefonnummer
+3. Wähle deine Interessensgebiete
+4. Fertig! Du erhältst ab sofort deine personalisierten News
 
-## Development
-
-The project uses:
-- Vite for fast development and building
-- React with TypeScript for robust frontend development
-- shadcn-ui for beautiful, accessible UI components
-- Tailwind CSS for utility-first styling
-- Supabase for backend services:
-	- Authentication
-	- Database
-	- Real-time updates
-	- Storage
-- OpenAI GPT-4 for news summarization
-- Twilio for WhatsApp message delivery
-- Ragy.ai for news aggregation
-
-## Building for Production
-
-To create a production build:
+## 📦 Produktions-Build
 
 ```sh
 npm run build
 ```
 
-The build artifacts will be stored in the `dist/` directory.
+Die Build-Dateien findest du im `dist/` Verzeichnis.
 
-## License
+## 📄 Lizenz
 
 MIT
 

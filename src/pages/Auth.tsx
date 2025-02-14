@@ -5,11 +5,13 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/components/ui/use-toast'
+import { GraduationCap, Mail } from 'lucide-react'
 
 export default function Auth() {
 	const [isSignUp, setIsSignUp] = useState(false)
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const [isStudent, setIsStudent] = useState(false)
 	const { signIn, signUp } = useAuthContext()
 	const navigate = useNavigate()
 	const { toast } = useToast()
@@ -23,7 +25,7 @@ export default function Auth() {
 		if (error) {
 			toast({
 				variant: "destructive",
-				title: "Error",
+				title: "Fehler",
 				description: error.message
 			})
 		} else {
@@ -33,43 +35,80 @@ export default function Auth() {
 
 	return (
 		<div className="container flex items-center justify-center min-h-screen">
-			<Card className="w-[350px]">
+			<Card className="w-[400px]">
 				<CardHeader>
-					<CardTitle>{isSignUp ? 'Create Account' : 'Sign In'}</CardTitle>
+					<CardTitle>{isSignUp ? 'Account erstellen' : 'Anmelden'}</CardTitle>
 					<CardDescription>
 						{isSignUp 
-							? 'Create a new account to get started' 
-							: 'Sign in to access your personalized news'}
+							? 'Erstelle deinen Account für personalisierte News' 
+							: 'Melde dich an und bleib auf dem Laufenden'}
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<form onSubmit={handleSubmit} className="space-y-4">
-						<Input
-							type="email"
-							placeholder="Email"
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-							required
-						/>
-						<Input
-							type="password"
-							placeholder="Password"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							required
-						/>
+						<div className="space-y-2">
+							<Input
+								type="email"
+								placeholder="E-Mail"
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								required
+								className="focus:ring-primary"
+							/>
+							<Input
+								type="password"
+								placeholder="Passwort"
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
+								required
+								className="focus:ring-primary"
+							/>
+						</div>
+
+						{isSignUp && (
+							<div className="flex items-center gap-2 text-sm text-gray-600">
+								<input
+									type="checkbox"
+									id="student"
+									checked={isStudent}
+									onChange={(e) => setIsStudent(e.target.checked)}
+									className="rounded border-gray-300 text-primary focus:ring-primary"
+								/>
+								<label htmlFor="student" className="flex items-center gap-2">
+									<GraduationCap className="w-4 h-4" />
+									Ich bin Student/in (50% Rabatt)
+								</label>
+							</div>
+						)}
+
 						<Button type="submit" className="w-full">
-							{isSignUp ? 'Sign Up' : 'Sign In'}
+							{isSignUp ? 'Kostenlos registrieren' : 'Anmelden'}
 						</Button>
+
+						{isSignUp && (
+							<p className="text-xs text-gray-500 text-center">
+								Mit deiner Registrierung akzeptierst du unsere Nutzungsbedingungen und Datenschutzrichtlinien.
+							</p>
+						)}
+
+						<div className="relative">
+							<div className="absolute inset-0 flex items-center">
+								<span className="w-full border-t" />
+							</div>
+							<div className="relative flex justify-center text-xs uppercase">
+								<span className="bg-white px-2 text-gray-500">oder</span>
+							</div>
+						</div>
+
 						<Button
 							type="button"
-							variant="ghost"
+							variant="outline"
 							className="w-full"
 							onClick={() => setIsSignUp(!isSignUp)}
 						>
 							{isSignUp 
-								? 'Already have an account? Sign In' 
-								: "Don't have an account? Sign Up"}
+								? 'Du hast bereits einen Account? Anmelden' 
+								: 'Noch kein Account? Jetzt registrieren'}
 						</Button>
 					</form>
 				</CardContent>

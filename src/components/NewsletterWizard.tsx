@@ -10,7 +10,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
@@ -20,6 +19,8 @@ import {
   FileText,
   MessageCircle,
   Settings2,
+  Globe,
+  Bell,
 } from "lucide-react";
 
 interface NewsletterPreferences {
@@ -28,149 +29,216 @@ interface NewsletterPreferences {
   length: string;
   style: string;
   topics: string[];
+  language: string;
+  contentTypes: string[];
+  breakingNews: boolean;
+  whatsappNumber: string;
 }
 
 export function NewsletterWizard() {
   const [step, setStep] = useState(1);
   const [preferences, setPreferences] = useState<NewsletterPreferences>({
-    frequency: "",
+    frequency: "daily",
     deliveryTime: "09:00",
     length: "medium",
     style: "casual",
     topics: [],
+    language: "de",
+    contentTypes: ["articles"],
+    breakingNews: true,
+    whatsappNumber: "",
   });
+
+  const contentTypeOptions = [
+    { id: "articles", label: "Artikel" },
+    { id: "summaries", label: "Zusammenfassungen" },
+    { id: "breaking", label: "Breaking News" },
+    { id: "analysis", label: "Analysen" },
+  ];
 
   const updatePreference = (key: keyof NewsletterPreferences, value: any) => {
     setPreferences((prev) => ({ ...prev, [key]: value }));
   };
 
-  const nextStep = () => setStep((prev) => Math.min(prev + 1, 4));
+  const nextStep = () => setStep((prev) => Math.min(prev + 1, 5));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
   const renderStep = () => {
     switch (step) {
       case 1:
         return (
-          <div className="space-y-6">
+            <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold mb-4">Delivery Frequency</h3>
+              <h3 className="text-lg font-semibold mb-4">Zustellungsrhythmus</h3>
               <Select
-                value={preferences.frequency}
-                onValueChange={(value) => updatePreference("frequency", value)}
+              value={preferences.frequency}
+              onValueChange={(value) => updatePreference("frequency", value)}
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select frequency" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="daily">Daily</SelectItem>
-                  <SelectItem value="weekly">Weekly</SelectItem>
-                  <SelectItem value="biweekly">Bi-weekly</SelectItem>
-                  <SelectItem value="monthly">Monthly</SelectItem>
-                </SelectContent>
+              <SelectTrigger>
+                <SelectValue placeholder="Häufigkeit wählen" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="daily">Täglich</SelectItem>
+                <SelectItem value="weekly">Wöchentlich</SelectItem>
+                <SelectItem value="biweekly">Zweiwöchentlich</SelectItem>
+                <SelectItem value="monthly">Monatlich</SelectItem>
+              </SelectContent>
               </Select>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-4">Delivery Time</h3>
+              <h3 className="text-lg font-semibold mb-4">Zustellungszeit</h3>
               <Input
-                type="time"
-                value={preferences.deliveryTime}
-                onChange={(e) =>
-                  updatePreference("deliveryTime", e.target.value)
-                }
-                className="w-full"
+              type="time"
+              value={preferences.deliveryTime}
+              onChange={(e) => updatePreference("deliveryTime", e.target.value)}
+              className="w-full"
               />
             </div>
-          </div>
+            <div>
+              <h3 className="text-lg font-semibold mb-4">WhatsApp Nummer</h3>
+              <Input
+              type="tel"
+              placeholder="+49 123 456789"
+              value={preferences.whatsappNumber}
+              onChange={(e) => updatePreference("whatsappNumber", e.target.value)}
+              className="w-full"
+              />
+            </div>
+            </div>
         );
       case 2:
         return (
-          <div className="space-y-6">
+            <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold mb-4">Newsletter Length</h3>
+              <h3 className="text-lg font-semibold mb-4">Newsletter-Länge</h3>
               <RadioGroup
-                value={preferences.length}
-                onValueChange={(value) => updatePreference("length", value)}
-                className="flex flex-col space-y-3"
+              value={preferences.length}
+              onValueChange={(value) => updatePreference("length", value)}
+              className="flex flex-col space-y-3"
               >
-                <div className="flex items-center space-x-3">
-                  <RadioGroupItem value="short" id="short" />
-                  <label htmlFor="short" className="cursor-pointer">
-                    Short (2-3 min read)
-                  </label>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <RadioGroupItem value="medium" id="medium" />
-                  <label htmlFor="medium" className="cursor-pointer">
-                    Medium (5-7 min read)
-                  </label>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <RadioGroupItem value="long" id="long" />
-                  <label htmlFor="long" className="cursor-pointer">
-                    Long (10+ min read)
-                  </label>
-                </div>
+              <div className="flex items-center space-x-3">
+                <RadioGroupItem value="short" id="short" />
+                <label htmlFor="short">Kurz (2-3 Min.)</label>
+              </div>
+              <div className="flex items-center space-x-3">
+                <RadioGroupItem value="medium" id="medium" />
+                <label htmlFor="medium">Mittel (5-7 Min.)</label>
+              </div>
+              <div className="flex items-center space-x-3">
+                <RadioGroupItem value="long" id="long" />
+                <label htmlFor="long">Lang (10+ Min.)</label>
+              </div>
               </RadioGroup>
             </div>
-          </div>
+            <div className="mt-6">
+              <h3 className="text-lg font-semibold mb-4">Inhaltstypen</h3>
+              <div className="space-y-3">
+              {contentTypeOptions.map((type) => (
+                <div key={type.id} className="flex items-center space-x-3">
+                <Checkbox
+                  id={type.id}
+                  checked={preferences.contentTypes.includes(type.id)}
+                  onCheckedChange={(checked) => {
+                  const newTypes = checked
+                    ? [...preferences.contentTypes, type.id]
+                    : preferences.contentTypes.filter((t) => t !== type.id);
+                  updatePreference("contentTypes", newTypes);
+                  }}
+                />
+                <label htmlFor={type.id}>{type.label}</label>
+                </div>
+              ))}
+              </div>
+            </div>
+            </div>
         );
-      case 3:
+        case 3:
         return (
           <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Content Style</h3>
-              <RadioGroup
-                value={preferences.style}
-                onValueChange={(value) => updatePreference("style", value)}
-                className="flex flex-col space-y-3"
-              >
-                <div className="flex items-center space-x-3">
-                  <RadioGroupItem value="casual" id="casual" />
-                  <label htmlFor="casual" className="cursor-pointer">
-                    Casual & Conversational
-                  </label>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <RadioGroupItem value="professional" id="professional" />
-                  <label htmlFor="professional" className="cursor-pointer">
-                    Professional & Formal
-                  </label>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <RadioGroupItem value="technical" id="technical" />
-                  <label htmlFor="technical" className="cursor-pointer">
-                    Technical & Detailed
-                  </label>
-                </div>
-              </RadioGroup>
-            </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Sprache</h3>
+            <Select
+            value={preferences.language}
+            onValueChange={(value) => updatePreference("language", value)}
+            >
+            <SelectTrigger>
+              <SelectValue placeholder="Sprache wählen" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="de">Deutsch</SelectItem>
+              <SelectItem value="en">Englisch</SelectItem>
+              <SelectItem value="mixed">Gemischt</SelectItem>
+            </SelectContent>
+            </Select>
+          </div>
           </div>
         );
-      case 4:
+
+        case 4:
         return (
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold mb-4">Preview</h3>
-            <div className="bg-white p-6 rounded-lg border border-gray-200">
-              <h4 className="font-medium text-gray-900 mb-2">
-                Your Newsletter Settings
-              </h4>
-              <ul className="space-y-2 text-gray-600">
-                <li>
-                  <span className="font-medium">Frequency:</span>{" "}
-                  {preferences.frequency}
-                </li>
-                <li>
-                  <span className="font-medium">Delivery Time:</span>{" "}
-                  {preferences.deliveryTime}
-                </li>
-                <li>
-                  <span className="font-medium">Length:</span> {preferences.length}
-                </li>
-                <li>
-                  <span className="font-medium">Style:</span> {preferences.style}
-                </li>
-              </ul>
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Benachrichtigungen</h3>
+            <div className="space-y-4">
+            <div className="flex items-center space-x-3">
+              <Checkbox
+              id="breaking-news"
+              checked={preferences.breakingNews}
+              onCheckedChange={(checked) => 
+                updatePreference("breakingNews", checked)
+              }
+              />
+              <label htmlFor="breaking-news">
+              Breaking News erhalten
+              </label>
             </div>
+            <p className="text-sm text-gray-500 ml-7">
+              Du erhältst wichtige Nachrichten sofort, auch außerhalb deiner gewählten Zustellzeit
+            </p>
+            </div>
+          </div>
+          </div>
+        );
+
+        case 5:
+        return (
+          <div className="space-y-6">
+          <h3 className="text-lg font-semibold mb-4">Übersicht</h3>
+          <div className="bg-white p-6 rounded-lg border border-gray-200">
+            <h4 className="font-medium text-gray-900 mb-4">
+            Deine Newsletter-Einstellungen
+            </h4>
+            <ul className="space-y-3 text-gray-600">
+            <li>
+              <span className="font-medium">Häufigkeit:</span>{" "}
+              {preferences.frequency === "daily" ? "Täglich" : 
+               preferences.frequency === "weekly" ? "Wöchentlich" : 
+               preferences.frequency === "biweekly" ? "Zweiwöchentlich" : "Monatlich"}
+            </li>
+            <li>
+              <span className="font-medium">Zustellungszeit:</span>{" "}
+              {preferences.deliveryTime} Uhr
+            </li>
+            <li>
+              <span className="font-medium">WhatsApp:</span>{" "}
+              {preferences.whatsappNumber}
+            </li>
+            <li>
+              <span className="font-medium">Länge:</span>{" "}
+              {preferences.length === "short" ? "Kurz" :
+               preferences.length === "medium" ? "Mittel" : "Lang"}
+            </li>
+            <li>
+              <span className="font-medium">Sprache:</span>{" "}
+              {preferences.language === "de" ? "Deutsch" :
+               preferences.language === "en" ? "Englisch" : "Gemischt"}
+            </li>
+            <li>
+              <span className="font-medium">Breaking News:</span>{" "}
+              {preferences.breakingNews ? "Aktiviert" : "Deaktiviert"}
+            </li>
+            </ul>
+          </div>
           </div>
         );
       default:
@@ -183,10 +251,11 @@ export function NewsletterWizard() {
       {/* Progress Steps */}
       <div className="flex justify-between mb-8">
         {[
-          { icon: Clock, label: "Delivery" },
-          { icon: FileText, label: "Length" },
-          { icon: MessageCircle, label: "Style" },
-          { icon: Settings2, label: "Preview" },
+            { icon: Clock, label: "Zustellung" },
+            { icon: FileText, label: "Inhalt" },
+            { icon: Globe, label: "Sprache" },
+            { icon: Bell, label: "Benachrichtigungen" },
+            { icon: Settings2, label: "Übersicht" },
         ].map((item, index) => (
           <div
             key={index}
@@ -222,14 +291,14 @@ export function NewsletterWizard() {
           className="flex items-center"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Previous
+            Zurück
         </Button>
         <Button
-          onClick={step === 4 ? () => console.log(preferences) : nextStep}
-          className="flex items-center"
-        >
-          {step === 4 ? "Complete Setup" : "Next"}
-          {step !== 4 && <ArrowRight className="w-4 h-4 ml-2" />}
+            onClick={step === 5 ? () => console.log("Completing setup with preferences:", preferences) : nextStep}
+            className="flex items-center"
+          >
+            {step === 5 ? "Einrichtung abschließen" : "Weiter"}
+            {step !== 5 && <ArrowRight className="w-4 h-4 ml-2" />}
         </Button>
       </div>
     </div>

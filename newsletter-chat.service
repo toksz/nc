@@ -1,0 +1,19 @@
+[Unit]
+Description=Newsletter.chat Web Application
+After=network.target
+
+[Service]
+Type=forking
+User=www-data
+WorkingDirectory=/var/www/newsletter.chat
+Environment=NODE_ENV=production
+ExecStart=/usr/local/bin/pm2 start npm --name "newsletter-chat" -- start
+ExecReload=/usr/local/bin/pm2 reload newsletter-chat
+ExecStop=/usr/local/bin/pm2 stop newsletter-chat
+
+# Restart service after 10 seconds if node service crashes
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
